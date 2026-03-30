@@ -39,7 +39,8 @@ User → UI (Tkinter) → Python Logic → MySQL Database
 
 
 ### 🏠 Dashboard
-![Dashboard](assets/screenshots/02_dashboard.png)
+<img width="682" height="714" alt="Dashboard" src="https://github.com/user-attachments/assets/a539ad48-faed-49ff-9641-198cd1eccc88" />
+
 
 ### 📚 Subject Management
 ![Subjects](assets/screenshots/03_subject.png)
