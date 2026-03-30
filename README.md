@@ -32,3 +32,26 @@ User → UI (Tkinter) → Python Logic → MySQL Database
 → Data Processing → Analytics → Insights & Reports
 
 ---
+## 📸 Application Screenshots
+
+### 🔐 Login System
+<img width="505" height="546" alt="login" src="https://github.com/user-attachments/assets/28fd4aa9-f6db-4837-bcc3-84e3837811ae" />
+
+
+### 🏠 Dashboard
+![Dashboard](assets/screenshots/02_dashboard.png)
+
+### 📚 Subject Management
+![Subjects](assets/screenshots/03_subject.png)
+
+### ⏱ Study Session Tracking
+![Session](assets/screenshots/04_session.png)
+
+### 📊 Analytics Dashboard
+![Analytics](assets/screenshots/05_analytics.png)
+
+### 🧠 Fatigue Detection
+![Fatigue](assets/screenshots/06_fatigue.png)
+
+### ⚙️ Settings Module
+![Settings](assets/screenshots/07_settings.png)
