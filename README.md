@@ -23,7 +23,6 @@ A standalone desktop application built using Python and MySQL to analyze and imp
 - Python (Tkinter for GUI)
 - MySQL (Relational Database)
 - Matplotlib (Data Visualization)
-- bcrypt (Security)
 
 ---
 
@@ -33,5 +32,3 @@ User → UI (Tkinter) → Python Logic → MySQL Database
 → Data Processing → Analytics → Insights & Reports
 
 ---
-
-## 📂 Project Structure
