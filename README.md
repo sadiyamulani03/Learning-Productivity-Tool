@@ -39,11 +39,13 @@ User → UI (Tkinter) → Python Logic → MySQL Database
 
 
 ### 🏠 Dashboard
-<img width="682" height="714" alt="Dashboard" src="https://github.com/user-attachments/assets/a539ad48-faed-49ff-9641-198cd1eccc88" />
+<img width="687" height="582" alt="Screenshot 2026-03-30 203729" src="https://github.com/user-attachments/assets/e690d999-a62d-441e-9555-d34e1690f97e" />
+
 
 
 ### 📚 Subject Management
-![Subjects](assets/screenshots/03_subject.png)
+<img width="682" height="714" alt="Screenshot 2026-03-30 203841" src="https://github.com/user-attachments/assets/b20c8eb3-49d4-4a3e-b40d-5271b25e7bee" />
+
 
 ### ⏱ Study Session Tracking
 ![Session](assets/screenshots/04_session.png)
