@@ -64,3 +64,7 @@ User → UI (Tkinter) → Python Logic → MySQL Database
 
 <img width="428" height="822" alt="Screenshot 2026-03-30 204702" src="https://github.com/user-attachments/assets/79b04026-56b1-4952-b33a-71c1f491ae77" />
 
+### 📌Database
+
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/7beea0d1-a7b9-470e-a065-6a8da74b4e3a" />
+
