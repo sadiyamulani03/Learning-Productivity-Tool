@@ -18,7 +18,7 @@ CREATE TABLE subjects (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
-CREATE TABLE study_sessions (
+CREATE TABLE studySessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     subject_id INT NOT NULL,
@@ -30,15 +30,15 @@ CREATE TABLE study_sessions (
     notes TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_session_user
+    CONSTRAINT fkSessionUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE,
 
-    CONSTRAINT fk_session_subject
+    CONSTRAINT fkSessionSubject
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
     ON DELETE CASCADE
 );
-CREATE TABLE productivity_metrics (
+CREATE TABLE productivityMetrics (
     metric_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     total_hours FLOAT DEFAULT 0,
@@ -47,18 +47,18 @@ CREATE TABLE productivity_metrics (
     best_study_hour INT,
     calculated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_metric_user
+    CONSTRAINT fkMetricUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
-CREATE TABLE fatigue_analysis (
+CREATE TABLE fatigueAnalysis (
     fatigue_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     fatigue_score FLOAT NOT NULL,
     fatigue_level VARCHAR(20) NOT NULL,
     analysis_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_fatigue_user
+    CONSTRAINT fkFatigueUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
@@ -71,7 +71,7 @@ CREATE TABLE goals (
     status VARCHAR(20) DEFAULT 'Active',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_goal_user
+    CONSTRAINT fkGoalUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
@@ -84,7 +84,7 @@ CREATE TABLE reports (
     productivity_score FLOAT,
     generated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_report_user
+    CONSTRAINT fkReportUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
@@ -95,7 +95,7 @@ CREATE TABLE notifications (
     status VARCHAR(20) DEFAULT 'Unread',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_notification_user
+    CONSTRAINT fkNotificationUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
@@ -106,11 +106,11 @@ CREATE TABLE settings (
     reminder_time TIME,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_setting_user
+    CONSTRAINT fkSettingUser
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
 );
-CREATE TABLE settings_new (
+CREATE TABLE settingsNew (
     setting_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     theme VARCHAR(20) DEFAULT 'Light',

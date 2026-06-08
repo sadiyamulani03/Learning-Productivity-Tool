@@ -1,13 +1,13 @@
 # dashboard.py
 import tkinter as tk
-from subject_module import SubjectModule
-from session_module import StudySessionModule
-from analytics_module import AnalyticsModule
-from fatigue_module import FatigueDetectionModule
-from goal_module import GoalModule
-from notification_module import NotificationModule
-from report_module import ReportModule
-from settings_module import SettingsModule
+from subject import SubjectModule
+from studySessions import StudySessionModule
+from analytics import AnalyticsModule
+from fatigue import FatigueDetectionModule
+from goal import GoalModule
+from notification import NotificationModule
+from report import ReportModule
+from settings import SettingsModule
 
 class Dashboard:
     def __init__(self, root, user_id):
@@ -20,8 +20,8 @@ class Dashboard:
         tk.Label(root, text="Dashboard", font=("Arial", 16, "bold")).pack(pady=20)
 
         # Buttons for all modules
-        tk.Button(root, text="Manage Subjects", width=30, command=self.open_subjects).pack(pady=5)
-        tk.Button(root, text="Add Study Session", width=30, command=self.open_study_session).pack(pady=5)
+        tk.Button(root, text="Manage Subjects", width=30, command=self.openSubjects).pack(pady=5)
+        tk.Button(root, text="Add Study Session", width=30, command=self.open_studySession).pack(pady=5)
         tk.Button(root, text="View Analytics", width=30, command=self.open_analytics).pack(pady=5)
         tk.Button(root, text="Check Fatigue", width=30, command=self.open_fatigue).pack(pady=5)
         tk.Button(root, text="Goal Management", width=30, command=self.open_goal).pack(pady=5)
@@ -30,11 +30,11 @@ class Dashboard:
         tk.Button(root, text="Settings", width=30, command=self.open_settings).pack(pady=5)
 
     # Module Openers
-    def open_subjects(self):
+    def openSubjects(self):
         subject_window = tk.Toplevel(self.root)
         SubjectModule(subject_window, self.user_id)
 
-    def open_study_session(self):
+    def open_studySession(self):
         session_window = tk.Toplevel(self.root)
         StudySessionModule(session_window, self.user_id)
 
