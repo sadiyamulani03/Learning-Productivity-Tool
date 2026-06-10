@@ -4,34 +4,34 @@ from db_connection import get_connection
 from datetime import datetime, timedelta
 
 class FatigueDetectionModule:
-    def __init__(self, root, user_id):
+    def __init__(self, root, userId):
         self.root = root
-        self.user_id = user_id
+        self.userId = userId
         self.root.title("Fatigue Detection")
         self.root.geometry("400x300")
 
         tk.Label(root, text="Fatigue Detection Module", font=("Arial", 14, "bold")).pack(pady=10)
-        tk.Button(root, text="Analyze Fatigue", command=self.analyze_fatigue).pack(pady=10)
+        tk.Button(root, text="Analyze Fatigue", command=self.analyzeFatigue).pack(pady=10)
         
-        self.result_label = tk.Label(root, text="", font=("Arial", 12), fg="red")
-        self.result_label.pack(pady=10)
+        self.resultLabel = tk.Label(root, text="", font=("Arial", 12), fg="red")
+        self.resultLabel.pack(pady=10)
         
-        self.recommendation_label = tk.Label(root, text="", font=("Arial", 10), fg="blue")
-        self.recommendation_label.pack(pady=10)
+        self.recommendationLabel = tk.Label(root, text="", font=("Arial", 10), fg="blue")
+        self.recommendationLabel.pack(pady=10)
 
     # 🔹 Core Fatigue Logic
-    def analyze_fatigue(self):
-        conn = get_connection()
+    def analyzeFatigue(self):
+        conn = getConnection()
         cursor = conn.cursor()
         
         # Fetch last 7 study sessions for the user
         cursor.execute("""
-            SELECT start_time, duration, focus_level
-            FROM study_sessions
-            WHERE user_id = %s
-            ORDER BY start_time DESC
+            SELECT startTime, duration, focusLevel
+            FROM studySessions
+            WHERE userId = %s
+            ORDER BY startTime DESC
             LIMIT 7
-        """, (self.user_id,))
+        """, (self.userId,))
         
         sessions = cursor.fetchall()
         conn.close()
@@ -41,28 +41,28 @@ class FatigueDetectionModule:
             return
         
         # Calculate trends
-        focus_values = [row[2] for row in sessions]
-        duration_values = [row[1] for row in sessions]
+        focusValues = [row[2] for row in sessions]
+        durationValues = [row[1] for row in sessions]
         
         # Simple trend: last - first
-        focus_trend = focus_values[-1] - focus_values[0]  # negative => decreasing focus
-        duration_trend = duration_values[-1] - duration_values[0]  # positive => increasing duration
+        focusTrend = focusValues[-1] - focusValues[0]  # negative => decreasing focus
+        durationTrend = durationValues[-1] - durationValues[0]  # positive => increasing duration
         
         # Fatigue logic thresholds (customize as needed)
-        focus_threshold = -2  # focus decreased by 2 or more
-        duration_threshold = 2  # duration increased by 2 hours or more
+        focusThreshold = -2  # focus decreased by 2 or more
+        durationThreshold = 2  # duration increased by 2 hours or more
         
-        fatigue_score = abs(focus_trend) * duration_trend  # simple score calculation
-        fatigue_alert = False
+        fatigueScore = abs(focusTrend) * durationTrend  # simple score calculation
+        fatigueAlert = False
         
-        if focus_trend < focus_threshold and duration_trend > duration_threshold:
-            fatigue_alert = True
-            message = f"⚠️ Fatigue Detected! Score: {round(fatigue_score,2)}"
+        if focusTrend < focusThreshold and durationTrend > durationThreshold:
+            fatigueAlert = True
+            message = f"⚠️ Fatigue Detected! Score: {round(fatigueScore,2)}"
             recommendation = "💡 Take a short break, relax, and avoid long continuous sessions."
         else:
-            message = f"✅ Fatigue level normal. Score: {round(fatigue_score,2)}"
+            message = f"✅ Fatigue level normal. Score: {round(fatigueScore,2)}"
             recommendation = "Keep up the good study habits!"
         
         # Display results
-        self.result_label.config(text=message)
-        self.recommendation_label.config(text=recommendation)
+        self.resultLabel.config(text=message)
+        self.recommendationLabel.config(text=recommendation)
