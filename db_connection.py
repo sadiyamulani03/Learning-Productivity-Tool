@@ -8,3 +8,4 @@ def getConnection():
         database="LearningProductivityDB"
     )
     return conn
+    
