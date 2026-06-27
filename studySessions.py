@@ -1,145 +1,145 @@
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
-from db_connection import get_connection
+from db_connection import getConnection
 
 class StudySessionModule:
 
-    def __init__(self, root, user_id):
+    def __init__(self, root, userId):
         self.root = root
-        self.user_id = user_id
+        self.userId = userId
         self.root.title("Study Session Module")
         self.root.geometry("700x500")
 
         # Subject Dropdown
         tk.Label(root, text="Select Subject").pack()
-        self.subject_var = tk.StringVar()
-        self.subject_menu = tk.OptionMenu(root, self.subject_var, "")
-        self.subject_menu.pack()
+        self.subjectVar = tk.StringVar()
+        self.subjectMenu = tk.OptionMenu(root, self.subjectVar, "")
+        self.subjectMenu.pack()
 
         # Start & End Time
         tk.Label(root, text="Start Time (YYYY-MM-DD HH:MM)").pack()
-        self.entry_start = tk.Entry(root)
-        self.entry_start.pack()
+        self.entryStart = tk.Entry(root)
+        self.entryStart.pack()
         tk.Label(root, text="End Time (YYYY-MM-DD HH:MM)").pack()
-        self.entry_end = tk.Entry(root)
-        self.entry_end.pack()
+        self.entryEnd = tk.Entry(root)
+        self.entryEnd.pack()
 
         # Focus & Difficulty
         tk.Label(root, text="Focus Level (1-10)").pack()
-        self.entry_focus = tk.Entry(root)
-        self.entry_focus.pack()
+        self.entryFocus = tk.Entry(root)
+        self.entryFocus.pack()
         tk.Label(root, text="Difficulty Level (1-5)").pack()
-        self.entry_difficulty = tk.Entry(root)
-        self.entry_difficulty.pack()
+        self.entryDifficulty = tk.Entry(root)
+        self.entryDifficulty.pack()
 
         # Notes
         tk.Label(root, text="Notes").pack()
-        self.entry_notes = tk.Entry(root, width=50)
-        self.entry_notes.pack()
+        self.entryNotes = tk.Entry(root, width=50)
+        self.entryNotes.pack()
 
         # Save Button
-        tk.Button(root, text="Save Session", command=self.save_session).pack(pady=5)
+        tk.Button(root, text="Save Session", command=self.saveSession).pack(pady=5)
 
         # History Listbox
         tk.Label(root, text="Study History").pack()
-        self.history_list = tk.Listbox(root, width=100)
-        self.history_list.pack(pady=10, fill=tk.BOTH, expand=True)
+        self.historyList = tk.Listbox(root, width=100)
+        self.historyList.pack(pady=10, fill=tk.BOTH, expand=True)
 
         # Load subjects and history
-        self.load_subjects()
-        self.load_history()
+        self.loadSubjects()
+        self.loadHistory()
 
     # 🔹 Load Subjects
-    def load_subjects(self):
+    def loadSubjects(self):
         try:
-            conn = get_connection()
+            conn = getConnection()
             cursor = conn.cursor()
-            cursor.execute("SELECT subject_id, subject_name FROM subjects WHERE user_id = %s", (self.user_id,))
+            cursor.execute("SELECT subjectId, subjectName FROM subjects WHERE userId = %s", (self.userId,))
             subjects = cursor.fetchall()
             conn.close()
 
-            menu = self.subject_menu["menu"]
+            menu = self.subjectMenu["menu"]
             menu.delete(0, "end")
 
-            self.subject_dict = {}
-            for subject_id, subject_name in subjects:
-                self.subject_dict[subject_name] = subject_id
-                menu.add_command(label=subject_name,
-                                 command=lambda value=subject_name: self.subject_var.set(value))
+            self.subjectDict = {}
+            for subjectId, subjectName in subjects:
+                self.subjectDict[subject_name] = subjectId
+                menu.addCommand(label=subjectName,
+                                 command=lambda value=subjectName: self.subjectVar.set(value))
             if subjects:
-                self.subject_var.set(subjects[0][1])  # default first subject
+                self.subjectVar.set(subjects[0][1])  # default first subject
         except Exception as e:
             messagebox.showerror("Database Error", str(e))
 
     # 🔹 Calculate Duration
-    def calculate_duration(self, start_time, end_time):
-        duration = end_time - start_time
-        return duration.total_seconds() / 3600  # hours
+    def calculateDuration(self, startTime, endTime):
+        duration = endTime - startTime
+        return duration.totalSeconds() / 3600  # hours
 
     # 🔹 Save Session
-    def save_session(self):
+    def saveSession(self):
         try:
-            subject_name = self.subject_var.get()
-            if not subject_name:
+            subjectName = self.subjectVar.get()
+            if not subjectName:
                 messagebox.showerror("Error", "Select a subject")
                 return
-            subject_id = self.subject_dict[subject_name]
+            subjectId = self.subjectDict[subjectName]
 
-            start_time = datetime.strptime(self.entry_start.get(), "%Y-%m-%d %H:%M")
-            end_time = datetime.strptime(self.entry_end.get(), "%Y-%m-%d %H:%M")
-            duration = self.calculate_duration(start_time, end_time)
+            startTime = datetime.strptime(self.entryStart.get(), "%Y-%m-%d %H:%M")
+            endTime = datetime.strptime(self.entryEnd.get(), "%Y-%m-%d %H:%M")
+            duration = self.calculateDuration(startTime, endTime)
 
-            focus = int(self.entry_focus.get())
-            difficulty = int(self.entry_difficulty.get())
-            notes = self.entry_notes.get()
+            focus = int(self.entryFocus.get())
+            difficulty = int(self.entryDifficulty.get())
+            notes = self.entryNotes.get()
 
             if focus < 1 or focus > 10:
                 raise ValueError("Focus must be 1-10")
             if difficulty < 1 or difficulty > 5:
                 raise ValueError("Difficulty must be 1-5")
 
-            conn = get_connection()
+            conn = getConnection()
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO study_sessions
-                (user_id, subject_id, start_time, end_time, duration, focus_level, difficulty_level, notes)
+                (userId, subjectId, startTime, endTime, duration, focusLevel, difficultyLevel, notes)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (self.user_id, subject_id, start_time, end_time, duration, focus, difficulty, notes))
+            """, (self.userId, subjectId, startTime, endTime, duration, focus, difficulty, notes))
             conn.commit()
             conn.close()
 
             messagebox.showinfo("Success", "Session Saved Successfully!")
-            self.load_history()
+            self.loadHistory()
 
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
     # 🔹 Load Study History
-    def load_history(self):
-        self.history_list.delete(0, tk.END)
+    def loadHistory(self):
+        self.historyList.delete(0, tk.END)
         try:
-            conn = get_connection()
+            conn = getConnection()
             cursor = conn.cursor()
             cursor.execute("""
-                SELECT s.session_id, sub.subject_name, s.start_time, s.end_time, s.duration,
-                       s.focus_level, s.difficulty_level, s.notes
-                FROM study_sessions s
-                JOIN subjects sub ON s.subject_id = sub.subject_id
-                WHERE s.user_id = %s
-                ORDER BY s.start_time DESC
-            """, (self.user_id,))
+                SELECT s.sessionId, sub.subjectName, s.startTime, s.endTime, s.duration,
+                       s.focusLevel, s.difficultyLevel, s.notes
+                FROM studySessions s
+                JOIN subjects sub ON s.subjectId = sub.subjectId
+                WHERE s.userId = %s
+                ORDER BY s.startTime DESC
+            """, (self.userId,))
             sessions = cursor.fetchall()
             conn.close()
 
             for session in sessions:
-                self.history_list.insert(tk.END, f"{session[1]} | {session[2]} - {session[3]} | Duration: {session[4]:.2f}h | Focus: {session[5]} | Difficulty: {session[6]} | Notes: {session[7]}")
+                self.historyList.insert(tk.END, f"{session[1]} | {session[2]} - {session[3]} | Duration: {session[4]:.2f}h | Focus: {session[5]} | Difficulty: {session[6]} | Notes: {session[7]}")
         except Exception as e:
             messagebox.showerror("Database Error", str(e))
 
 # 🔹 Run standalone for testing
 if __name__ == "__main__":
     root = tk.Tk()
-    user_id = int(input("Enter your user_id to test: "))
-    app = StudySessionModule(root, user_id)
+    userId = int(input("Enter your userId to test: "))
+    app = StudySessionModule(root, userId)
     root.mainloop()
