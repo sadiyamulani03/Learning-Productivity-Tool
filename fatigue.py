@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from db_connection import get_connection
+from db_connection import getConnection
 from datetime import datetime, timedelta
 
 class FatigueDetectionModule:
